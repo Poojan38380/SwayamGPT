@@ -8,6 +8,17 @@ Made to solve the assignments of Swayam Courses via premium LLMs like GPT-4 and 
 
 ## Run Locally
 
+Create a virtual python environment(optional)
+
+```bash
+    python -m venv swayamGPT
+```
+Run this command in a terminal with administrator privileges
+```bash
+    swayamGPT\Scripts\activate
+```
+
+
 Clone the project
 
 ```bash
