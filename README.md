@@ -30,10 +30,100 @@ Start the server
   python app.py
 ```
 
+## How it works
+
+### Grabbing the url and storing the Scraped Data
+```javascript
+var url = document.getElementById("urlInput").value;
+        $.ajax({
+            type: 'POST',
+            url: '/swayamGPT/scrape',
+            data: { 'url': url },
+            success: function (response) {
+                storeQuestions(response)
+                getResult()
+                // displayQuestions(response);
+            }
+        });
+```
+This code sends the entered url to /swayamGPT/scrape where the data from the url is scraped from the page without the need to log in to Swayam site.
+
+The returned questions, along with the choices and image url are stored in the session storage.
+
+### Sending each question to GPT and getting the response
+
+```javascript
+    function getResult() {
+        var questions = JSON.parse(sessionStorage.getItem('questionsData'));
+        var index = 0;
+        processQuestion(index, questions);
+    }
+
+
+    function processQuestion(index, questions) {
+        var selectedOption = document.getElementById("gptoptions").value; // Retrieve selected option value
+        if (index >= questions.length) {
+            return;
+        }
+        displayQuestionNumber(index, selectedOption)
+        var question = questions[index];
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/swayamGPT/process_question',
+            data: JSON.stringify({ question: question, selectedOption: selectedOption }), // Include selected option in data object
+            contentType: 'application/json',
+            success: function (response) {
+                displayResult(response, function () {
+                    processQuestion(index + 1, questions);
+                });
+            }
+        });
+    }
+```
+
+This code grabs the data from the session storage and sends each question to the LLM model selected by the user and grabs the response from the GPT.
 
 ## Features
 
-- Just paste the assignment and magic happens itself
+- ### Scraping with cookies, so that there is no need to login to [Swayam Course Site](https://onlinecourses.nptel.ac.in)
+```python
+    #add your cookie header string in a .txt file and add it here
+    with open(r"cookies/switching_linear.txt", "r") as file:
+        # Read the contents of the file and strip any leading or trailing whitespace
+        
+        cookies = file.read().strip()
+
+    # Replace these with the actual URL and cookie header string
+    cookie_header = {"Cookie": cookies}
+```
+Make sure to view scraper.py once to understand the complications of scraping a webpage that uses mathematical symbols in data
+```python
+            for script in soup.find_all('script'):
+                if script.get('type') == 'math/tex':
+                    script.replace_with(script.text.strip())
+```
+This code make sure to not ignore the mathematical symbols
+
+- ### Using BACKOFF RELOADING to make sure that user gets the response if there are too many requests on the GPT models
+```python
+    max_retries = 5
+    backoff_factor = 1.5
+    retry_delay = 5  
+    for i in range(max_retries):
+        try:
+            #Code here
+            return result
+        except:
+            print(f"Request failed, retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
+            retry_delay *= backoff_factor
+```
+Backoff reloading makes sure that requests are sent to GPT models in exponential times if it faces error like "Too many requests"
+- Premium models like GPT-4 and GPT-4-TURBO also accepts image urls as input. Questions with images are also solved accurately with this feature.
+- Results gets displayed on the same page one after other so that user can see live progress
+- Usage of cookies, so that user doesn't have to log in to the [onlinecourses.nptel.ac.in site](https://onlinecourses.nptel.ac.in)
 - Choose from premium LLMs like GPT-4, GPT-4-TURBO, GPT-3.5-TURBO and GPT-3.5 to solve the assignment
 - Also get access to the premium LLMs for free 
 - Play small games while you wait for the solutions :)
