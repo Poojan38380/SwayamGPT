@@ -1,6 +1,11 @@
 # SwayamGPT
 
-Made to solve the assignments of Swayam Courses via premium LLMs like GPT-4 and GPT-4-TURBO solution to every assignment of Swayam Courses on National Programme on Technology Enhanced Learning(NPTEL).On every wednesday, everyone in our batch starts to worry about the solutions of Swayam Courses assignments, after getting less than half of total points in most assignments when solving the questions via free LLMs like GPT3.5 and Copilot, I got struck with the idea of this project. Most [Institutions of National Importance in India](https://www.education.gov.in/institutions-national-importance) provides students a way of getting extra credits via [Swayam Online Courses](https://onlinecourses.nptel.ac.in), and most of the students, if not all... study one week before the final examinations. But every week, we get an assignment to solve, which has to be submitted before 11:59PM. Why not make an app that solves the assignment automatically??? Here comes SwayamGPT.
+Made to solve the assignments of Swayam Courses on National Programme on Technology Enhanced Learning(NPTEL) via premium LLMs like GPT-4 and GPT-4-TURBO.On every wednesday, everyone in our batch in our college starts to worry about the solutions of Swayam Courses assignments... and after getting less than half of total points in most assignments when solving the questions via free LLMs like GPT3.5 and Copilot, I got struck with the idea of this project.
+
+Most [Institutions of National Importance in India](https://www.education.gov.in/institutions-national-importance) provides the students a way of getting extra credits via [Swayam Online Courses](https://onlinecourses.nptel.ac.in), and most of the students, if not all... study just one week before the final examinations. But every week, we get an assignment to solve, which has to be submitted before 11:59PM. Why not make an app that solves the assignment automatically??? 
+
+Here comes SwayamGPT into the frame!
+With the power of GPT-4-TURBO and GPT-4, swayamGPT asks the user only for the assignment url and BOOM... one by one, the screen fills up with the most accurate answers of the assignment.
 
 (There is also an added functionality to use premium GPTs for free.)
 
