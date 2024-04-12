@@ -6,6 +6,8 @@ Made to solve the assignments of Swayam Courses via premium LLMs like GPT-4 and 
 
 ## Run Locally
 
+Create a python virtual environment(optional)
+
 <!--
 Create a virtual python environment(optional)
 
