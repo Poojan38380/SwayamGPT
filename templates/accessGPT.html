@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Access GPT{% endblock %}
+{% block content %}
+<h1>Chat with GPT-3.5</h1>
+<input type="text" id="promptInput" placeholder="Enter Prompt">
+<select id="gptoptions">
+    <option value="gpt-4">GPT-4</option>
+    <option value="gpt-4-turbo" selected>GPT-4 Turbo (Accurate and chances of solving image questions)</option>
+    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+    <option value="gpt-3.5">GPT-3.5</option>
+
+</select>
+<div id="result"></div>
+<button onclick="submitPrompt()"> Submit</button>
+
+<div id="ResultsDiv"></div>
+
+
+<script>
+    function submitPrompt() {
+        var prompt = document.getElementById("promptInput").value;
+        var selectedOption = document.getElementById("gptoptions").value;
+
+        displayPrompt(prompt, selectedOption)
+        $.ajax({
+            type: 'POST',
+            url: '/accessGPT/get_response',
+            contentType: 'application/json',
+            data: JSON.stringify({ prompt: prompt, selectedOption: selectedOption }),
+            success: function (response) {
+
+                displayResult(response)
+            }
+        });
+    }
+
+    function displayPrompt(prompt, selectedOption) {
+        var temppromptdiv = '<div class="promptdiv">';
+        temppromptdiv += '<p><strong>' + prompt + '</strong></p>';
+        temppromptdiv += '<p>Be patient... Fetching answer from ' + selectedOption + '</p>';
+        temppromptdiv += '</div>';
+        document.getElementById("ResultsDiv").innerHTML += temppromptdiv;
+    }
+
+
+    function displayResult(response) {
+
+        var tempresultdiv = '<div class="resultdiv">';
+
+        tempresultdiv += '<p>' + response + '</p>';
+        tempresultdiv += '</div>';
+        document.getElementById("ResultsDiv").innerHTML += tempresultdiv;
+
+    }
+</script>
+{% endblock %}

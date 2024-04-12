@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Hello{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-xxx" crossorigin="anonymous" />
+
+
+
+</head>
+
+<body>
+    <header>
+        <nav class="nav">
+            <a href="/" class="logo">SwayamGPT</a>
+
+            <div class="hamburger">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
+
+            <div class="nav__link hide">
+                <a href="/">home</a>
+                <a href="/swayamGPT">SwayamGPT</a>
+                <a href="/accessGPT">AccessGPT</a>
+            </div>
+        </nav>
+    </header>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navLink = document.querySelector('.nav__link');
+
+        hamburger.addEventListener('click', () => {
+            navLink.classList.toggle('hide');
+        });
+    </script>
+
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+
+
+</body>
+
+
+
+</html>

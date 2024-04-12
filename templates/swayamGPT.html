@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}Swayam GPT{% endblock %}
+{% block content %}
+<h1>SwayamGPT</h1>
+<input type="text" id="urlInput" placeholder="Enter URL">
+<select id="gptoptions">
+    <option value="gpt-4">GPT-4</option>
+    <option value="gpt-4-turbo" selected>GPT-4 Turbo (Accurate and chances of solving image questions)</option>
+    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+    <option value="gpt-3.5">GPT-3.5</option>
+
+
+</select>
+<div id="result"></div>
+<button onclick="submitUrl()">Submit</button>
+<div id="Results"></div>
+
+<script>
+    function submitUrl() {
+        var url = document.getElementById("urlInput").value;
+        $.ajax({
+            type: 'POST',
+            url: '/swayamGPT/scrape',
+            data: { 'url': url },
+            success: function (response) {
+                storeQuestions(response)
+                getResult()
+                // displayQuestions(response);
+            }
+        });
+    }
+    function storeQuestions(response) {
+        sessionStorage.setItem('questionsData', JSON.stringify(response));
+    }
+
+    function getResult() {
+        var questions = JSON.parse(sessionStorage.getItem('questionsData'));
+        var index = 0;
+        processQuestion(index, questions);
+    }
+
+
+    function processQuestion(index, questions) {
+        var selectedOption = document.getElementById("gptoptions").value; // Retrieve selected option value
+        if (index >= questions.length) {
+            return;
+        }
+        displayQuestionNumber(index, selectedOption)
+        var question = questions[index];
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/swayamGPT/process_question',
+            data: JSON.stringify({ question: question, selectedOption: selectedOption }), // Include selected option in data object
+            contentType: 'application/json',
+            success: function (response) {
+                displayResult(response, function () {
+                    processQuestion(index + 1, questions);
+                });
+            }
+        });
+    }
+
+    function displayQuestionNumber(index, selectedOption) {
+
+        var questionNumber = '<div>';
+        questionNumber += '<p>Fetching the solution for Question ' + (index + 1) + ' from ' + selectedOption + '</p>';
+        questionNumber += '</div>';
+        document.getElementById("Results").innerHTML += questionNumber;
+
+
+
+    }
+    function displayResult(result, callback) {
+
+        var resultHtml = '<div >';
+        resultHtml += '<p><strong>' + result.question + '</strong></p>';
+        resultHtml += '<p>' + result.answer + '</p>';
+        resultHtml += '</div>';
+        document.getElementById("Results").innerHTML += resultHtml;
+
+        if (callback && typeof callback === 'function') {
+            callback();
+        }
+
+    }
+    // function processQuestion(index, questions) {
+    //     if (index >= questions.length) {
+    //         return;
+    //     }
+
+    //     var question = questions[index];
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/process_question',
+    //         data: JSON.stringify(question),
+    //         contentType: 'application/json',
+    //         success: function (response) {
+    //             displayResult(response);
+
+    //             processQuestion(index + 1, questions)
+
+    //         }
+    //     });
+    // }
+
+    // function displayResult(result) {
+    //     var resultHtml = '<div>';
+    //     resultHtml += '<p><strong>' + result.question + '</strong></p>';
+    //     resultHtml += '<p>' + result.answer + '</p>';
+    //     resultHtml += '</div>';
+    //     document.getElementById("Results").innerHTML += resultHtml;
+    // }
+
+    // function displayQuestions(questions) {
+    //     if (!questions || questions.length === 0) {
+    //         document.getElementById("questionsDisplay").innerHTML = "No questions found.";
+    //         return;
+    //     }
+
+    //     var questionsHtml = '<ul>';
+    //     questions.forEach(function (question) {
+    //         questionsHtml += '<li>';
+    //         questionsHtml += '<strong>Question:</strong> ' + question.question_text + '<br>';
+    //         questionsHtml += '<strong>Choices:</strong> ' + (Array.isArray(question.choices) ? question.choices.join(', ') : question.choices) + '<br>';
+    //         questionsHtml += '<strong>Images:</strong> ' + (Array.isArray(question.image_urls) ? question.image_urls.join(', ') : question.image_urls) + '<br>';
+    //         questionsHtml += '</li>';
+    //     });
+    //     questionsHtml += '</ul>';
+    //     document.getElementById("questionsDisplay").innerHTML = questionsHtml;
+    // }
+
+</script>
+{% endblock %}
