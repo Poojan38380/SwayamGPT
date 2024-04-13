@@ -24,7 +24,7 @@
         displayPrompt(prompt, selectedOption)
         $.ajax({
             type: 'POST',
-            url: '/accessGPT/get_response',
+            url: '/accessgpt/get_response',
             contentType: 'application/json',
             data: JSON.stringify({ prompt: prompt, selectedOption: selectedOption }),
             success: function (response) {

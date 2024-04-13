@@ -10,17 +10,17 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('home.html')
-@app.route('/swayamGPT')
+@app.route('/swayamgpt')
 def swayamGPT():
     return render_template('swayamGPT.html')
 
-@app.route('/swayamGPT/scrape', methods=['POST'])
+@app.route('/swayamgpt/scrape', methods=['POST'])
 def scrape():
     url = request.form['url']
     questions = scraper_function(url)
     return jsonify(questions)
 
-@app.route('/swayamGPT/process_question', methods=['POST'])
+@app.route('/swayamgpt/process_question', methods=['POST'])
 def process_question():
     data = request.json
     question = data.get('question')  # Retrieve question from JSON data
@@ -31,11 +31,11 @@ def process_question():
 
 
 
-@app.route('/accessGPT')
+@app.route('/accessgpt')
 def accessGPT():
     return render_template('accessGPT.html')
 
-@app.route('/accessGPT/get_response', methods=['POST'])
+@app.route('/accessgpt/get_response', methods=['POST'])
 def get_response():
     data = request.json
     prompt = data.get('prompt')  # Retrieve question from JSON data

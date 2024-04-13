@@ -93,7 +93,6 @@ def run_gpt(question, GPT):
                 model= GPT, messages=[{"role": "user", "content": prompt}]
             )
             result = {
-                "question": f"Question {question['question_number']}: {prompt} ",
                 "answer": f"Answer: {response.choices[0].message.content}",
             }
             return result
@@ -103,7 +102,6 @@ def run_gpt(question, GPT):
             retry_delay *= backoff_factor   
 
     result = {
-        "question": f"Can't find the solution to this question as too many users are using the site right now",
         "answer": f"Can't find the solution to this question as too many users are using the site right now",
     }
     return result

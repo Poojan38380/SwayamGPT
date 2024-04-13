@@ -11,16 +11,15 @@
 
 
 </select>
-<div id="result"></div>
-<button onclick="submitUrl()">Submit</button>
 <div id="Results"></div>
+<button onclick="submitUrl()">Submit</button>
 
 <script>
     function submitUrl() {
         var url = document.getElementById("urlInput").value;
         $.ajax({
             type: 'POST',
-            url: '/swayamGPT/scrape',
+            url: '/swayamgpt/scrape',
             data: { 'url': url },
             success: function (response) {
                 storeQuestions(response)
@@ -45,45 +44,53 @@
         if (index >= questions.length) {
             return;
         }
-        displayQuestionNumber(index, selectedOption)
         var question = questions[index];
+        displayQuestion(index, selectedOption, question)
 
 
         $.ajax({
             type: 'POST',
-            url: '/swayamGPT/process_question',
+            url: '/swayamgpt/process_question',
             data: JSON.stringify({ question: question, selectedOption: selectedOption }), // Include selected option in data object
             contentType: 'application/json',
             success: function (response) {
-                displayResult(response, function () {
-                    processQuestion(index + 1, questions);
-                });
+                displayResult(response)
+                processQuestion(index + 1, questions);
+
             }
         });
     }
 
-    function displayQuestionNumber(index, selectedOption) {
+    function displayQuestion(index, selectedOption, question) {
 
-        var questionNumber = '<div>';
-        questionNumber += '<p>Fetching the solution for Question ' + (index + 1) + ' from ' + selectedOption + '</p>';
-        questionNumber += '</div>';
-        document.getElementById("Results").innerHTML += questionNumber;
+        var displayQuestion = '<div class ="displayQuestion">';
+
+        displayQuestion += '<div class="question"><p> Q.' + question.question_number + ': ' + question.question_text + '</p></div>';
+
+
+        displayQuestion += '<div class ="displayChoices">';
+        question.choices.forEach(function (choice, index) {
+            displayQuestion += '<p>Choice ' + (index + 1) + ': ' + choice + '</p>';
+        });
+        displayQuestion += '</div>';
+
+        displayQuestion += '<div class="loading message>"<p>Fetching the solution for Question ' + (index + 1) + ' from ' + selectedOption + '</p></div>';
+
+
+        displayQuestion += '</div>';
+
+
+        document.getElementById("Results").innerHTML += displayQuestion;
 
 
 
     }
     function displayResult(result, callback) {
 
-        var resultHtml = '<div >';
-        resultHtml += '<p><strong>' + result.question + '</strong></p>';
+        var resultHtml = '<div class="displayAnswer" >';
         resultHtml += '<p>' + result.answer + '</p>';
         resultHtml += '</div>';
         document.getElementById("Results").innerHTML += resultHtml;
-
-        if (callback && typeof callback === 'function') {
-            callback();
-        }
-
     }
     // function processQuestion(index, questions) {
     //     if (index >= questions.length) {
