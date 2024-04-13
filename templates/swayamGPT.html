@@ -92,51 +92,6 @@
         resultHtml += '</div>';
         document.getElementById("Results").innerHTML += resultHtml;
     }
-    // function processQuestion(index, questions) {
-    //     if (index >= questions.length) {
-    //         return;
-    //     }
-
-    //     var question = questions[index];
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/process_question',
-    //         data: JSON.stringify(question),
-    //         contentType: 'application/json',
-    //         success: function (response) {
-    //             displayResult(response);
-
-    //             processQuestion(index + 1, questions)
-
-    //         }
-    //     });
-    // }
-
-    // function displayResult(result) {
-    //     var resultHtml = '<div>';
-    //     resultHtml += '<p><strong>' + result.question + '</strong></p>';
-    //     resultHtml += '<p>' + result.answer + '</p>';
-    //     resultHtml += '</div>';
-    //     document.getElementById("Results").innerHTML += resultHtml;
-    // }
-
-    // function displayQuestions(questions) {
-    //     if (!questions || questions.length === 0) {
-    //         document.getElementById("questionsDisplay").innerHTML = "No questions found.";
-    //         return;
-    //     }
-
-    //     var questionsHtml = '<ul>';
-    //     questions.forEach(function (question) {
-    //         questionsHtml += '<li>';
-    //         questionsHtml += '<strong>Question:</strong> ' + question.question_text + '<br>';
-    //         questionsHtml += '<strong>Choices:</strong> ' + (Array.isArray(question.choices) ? question.choices.join(', ') : question.choices) + '<br>';
-    //         questionsHtml += '<strong>Images:</strong> ' + (Array.isArray(question.image_urls) ? question.image_urls.join(', ') : question.image_urls) + '<br>';
-    //         questionsHtml += '</li>';
-    //     });
-    //     questionsHtml += '</ul>';
-    //     document.getElementById("questionsDisplay").innerHTML = questionsHtml;
-    // }
 
 </script>
 {% endblock %}
