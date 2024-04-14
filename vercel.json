@@ -11,4 +11,12 @@
             "dest":"app.py"
         }
     ]
+    ,
+    
+    "functions": {
+          "accessgpt/get_response": {
+            "maxDuration": 200
+          }
+        }
+      
 }
