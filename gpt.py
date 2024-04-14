@@ -8,7 +8,7 @@ def run_gpt(question, GPT):
     client = Client()
     max_retries = 5
     backoff_factor = 1.5
-    retry_delay = 5  # start with 1 second
+    retry_delay = 5  
     for i in range(max_retries):
         try:
             prompt = f"Can you please solve this question, there may/may not be multiple answers. {question['question_text']}."
